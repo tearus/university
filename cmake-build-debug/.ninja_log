@@ -1,0 +1,18 @@
+# ninja log v5
+0	168	7305573806235929	CMakeFiles/university.dir/backpack.cpp.obj	a051026fc8bbfda
+1	164	7305845423306226	build.ninja	34419822894e960a
+5	1729	7305834956901006	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1729	1976	7305834959361576	university.exe	a58caf21af1bd3bb
+10	874	7305724528421082	CMakeFiles/university.dir/backpack_algo.cpp.obj	5013c98401b3a66
+4	1851	7305846886588324	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1851	2100	7305846889068885	university.exe	a58caf21af1bd3bb
+4	1952	7305850744474114	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1952	2305	7305850747998936	university.exe	a58caf21af1bd3bb
+5	1763	7305851235858722	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1763	2010	7305851238309275	university.exe	a58caf21af1bd3bb
+4	1541	7305851580153033	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1542	1793	7305851582623597	university.exe	a58caf21af1bd3bb
+4	1910	7305853000087092	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1911	2198	7305853002957741	university.exe	a58caf21af1bd3bb
+4	1701	7305855430719980	CMakeFiles/university.dir/main.cpp.obj	49404891433fa6d8
+1701	1949	7305855433190540	university.exe	a58caf21af1bd3bb
