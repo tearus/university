@@ -1,6 +1,7 @@
 
 #ifndef UNIVERSITY_INTERFACE_H
 #define UNIVERSITY_INTERFACE_H
+
 #include <iostream>
 #include <vector>
 #include "backpack_algo.h"
@@ -8,7 +9,9 @@
 #include <algorithm>
 #include <pareto.h>
 #include <SetCoveProblem.h>
-void backpack_test(){
+#include <fstream>
+
+void backpack_test() {
     int item_count, capacity;
     std::cout << "Enter item count of elements: ";
     std::cin >> item_count;
@@ -44,7 +47,6 @@ void backpack_test(){
 
     std::cout << "Max Price: " << knapsack(capacity, item_count, weights, costs, selected) << std::endl;
 
-
     std::cout << "Selected items: ";
     for (int i = 0; i < item_count; ++i) {
         if (selected[i]) {
@@ -57,18 +59,60 @@ void backpack_test(){
     delete[] costs;
     delete[] selected;
 }
+
+void plotWithGnuplot(std::vector<std::vector<int>> best_cars, std::vector<std::vector<int>> cars) {
+    std::string plot = "plot";
+    std::ofstream scriptFile(plot);
+    if (!scriptFile) {
+        std::cerr << "Не удалось создать файл скрипта для gnuplot." << std::endl;
+        return;
+    }
+    scriptFile << "set term wxt" << std::endl
+               << "set xrange[100:500]\n"
+               << "set yrange[10:50]\n"
+               << "set zrange[10000:60000]\n"
+               << "set xlabel \"cкорость\"" << std::endl
+               << "set ylabel \"Расход топлива\"" << std::endl
+               << "set zlabel \"Цена\" " << std::endl
+               << "set title \"Фронт Парето\"\n"
+               << "$cars << EOD\n";
+    for (int i = 0; i < 100; i++) {
+        for (int j = 0; j < 3; ++j) {
+            scriptFile << cars[i][j] << " ";
+        }
+        scriptFile << std::endl;
+    }
+    scriptFile << "EOD\n";
+    scriptFile << "$best_cars << EOD\n";
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 3; ++j) {
+            scriptFile << best_cars[i][j] << " ";
+        }
+        scriptFile << std::endl;
+    }
+    scriptFile << "EOD\n"
+               << "set multiplot\n"
+               << "splot $cars with points\n"
+               << "replot$best_cars with lines\n"
+               << "unset multiplot \n"
+               << "pause -1" << std::endl;
+    scriptFile.close();
+    std::string command = "gnuplot " + plot;
+    system(command.c_str());
+}
+
 void pareto_test() {
-    std::vector<std::vector<int>> cars(100, std::vector<int>(3)); // Создаем вектор автомобилей с  100 элементами, каждый из которых представляет собой вектор из трех характеристик
-    std::random_device rd; // Генератор случайных чисел
-    std::mt19937 gen(rd()); // Мersenne Twister генератор случайных чисел
-    std::uniform_int_distribution<> speedDist(100,   200); // Распределение скорости от  100 до  200 км/ч
-    std::uniform_int_distribution<> fuelDist(5,   15); // Распределение расхода топлива от  5 до  15 литров на  100 км
-    std::uniform_int_distribution<> priceDist(10000,   50000); // Распределение цен от  10000 до  50000 единиц валюты
+    std::vector<std::vector<int>> cars(100, std::vector<int>(3));
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_int_distribution<> speedDist(100, 500);
+    std::uniform_int_distribution<> fuelDist(10, 50);
+    std::uniform_int_distribution<> priceDist(10000, 50000);
 
     for (auto &car: cars) {
-        car[0] = speedDist(gen); // Генерируем случайную скорость
-        car[1] = fuelDist(gen); // Генерируем случайный расход топлива
-        car[2] = priceDist(gen); // Генерируем случайную цену
+        car[0] = speedDist(gen);
+        car[1] = fuelDist(gen);
+        car[2] = priceDist(gen);
     }
 
     std::string tmp;
@@ -95,24 +139,26 @@ void pareto_test() {
         std::cout << num << " ";
     }
     std::cout << "\nWeight: " << *maxWeightIter << std::endl;
-
     std::cout << "10 automobiles with close by weight values:\n";
     std::vector<std::pair<double, int>> weightIndexPairs; // Вектор пар, где первый элемент - "вес", а второй - индекс автомобиля
-    for (size_t i =   0; i < weights.size(); ++i) {
+    for (size_t i = 0; i < weights.size(); ++i) {
         weightIndexPairs.emplace_back(weights[i], i);
     }
     std::sort(weightIndexPairs.begin(), weightIndexPairs.end(), [](const auto &a, const auto &b) {
         return a.first > b.first; // Сортируем по убыванию "веса"
     });
-
-    for (int i =   0; i <   10 && i < weightIndexPairs.size(); ++i) {
+    std::vector<std::vector<int>> best_cars(0, std::vector<int>(3));
+    for (int i = 0; i < 10 && i < weightIndexPairs.size(); ++i) {
+        best_cars.push_back(cars[weightIndexPairs[i].second]);
         std::cout << "Automobile: ";
         for (int num: cars[weightIndexPairs[i].second]) {
             std::cout << num << " ";
         }
         std::cout << "\nWeight: " << weightIndexPairs[i].first << std::endl;
     }
+    plotWithGnuplot(best_cars, cars);
 }
+
 void setcover_test() {
     std::vector<std::vector<int>> sets;
     std::vector<int> universe;
@@ -157,4 +203,5 @@ void setcover_test() {
     }
     std::cout << std::endl;
 }
+
 #endif //UNIVERSITY_INTERFACE_H

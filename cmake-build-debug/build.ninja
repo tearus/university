@@ -51,7 +51,7 @@ build cmake_object_order_depends_target_university: phony || CMakeFiles/universi
 
 build CMakeFiles/university.dir/main.cpp.obj: CXX_COMPILER__university_unscanned_Debug D$:/PGUPS/c++/university/main.cpp || cmake_object_order_depends_target_university
   DEP_FILE = CMakeFiles\university.dir\main.cpp.obj.d
-  FLAGS = -g -std=gnu++14 -fdiagnostics-color=always
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
   INCLUDES = -ID:/PGUPS/c++/university/.
   OBJECT_DIR = CMakeFiles\university.dir
   OBJECT_FILE_DIR = CMakeFiles\university.dir

@@ -11,6 +11,7 @@
 #include <random>
 #include <map>
 #include <limits>
+
 // Функция для вычисления пересечения двух множеств
 std::vector<int> intersection(const std::vector<int> &set1, const std::vector<int> &set2) {
     std::vector<int> result; // Результат пересечения
